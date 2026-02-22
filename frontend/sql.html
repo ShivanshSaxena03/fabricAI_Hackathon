@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body {
+    background-color: #E9EEF2;
+}
+.sidebar {
+    background-color: #2F3E46;
+}
+</style>
+
+</head>
+
+<body class="flex font-sans">
+
+<!-- Sidebar -->
+<div class="sidebar w-72 min-h-screen text-white p-10">
+
+    <h1 class="text-4xl font-serif mb-12">
+        FabricMind
+    </h1>
+
+    <nav class="space-y-6 text-lg">
+
+        <a href="dashboard.html" class="block hover:text-gray-300 transition">
+            Dashboard
+        </a>
+
+        <a href="outfit.html" class="block hover:text-gray-300 transition">
+            Outfit Generator
+        </a>
+
+        <a href="sql.html" class="block font-semibold text-gray-300">
+            SQL Intelligence
+        </a>
+
+        <a href="chat.html" class="block hover:text-gray-300 transition">
+            AI Copilot
+        </a>
+
+    </nav>
+
+</div>
+
+
+<!-- Main Content -->
+<div class="flex-1 flex flex-col items-center pt-20">
+
+    <h1 class="text-6xl font-serif text-gray-800 mb-16">
+        SQL Intelligence
+    </h1>
+
+    <div class="bg-white w-[700px] p-12 rounded-3xl shadow-lg">
+
+        <!-- Input -->
+        <input id="question"
+        placeholder="Ask your database question"
+        class="w-full p-5 mb-6 border border-gray-300 rounded-2xl text-lg focus:outline-none focus:ring-2 focus:ring-[#3E5C67] transition">
+
+        <!-- Button -->
+        <button onclick="ask()"
+        class="w-full bg-[#3E5C67] text-white py-4 rounded-full text-lg hover:opacity-90 transition">
+            Run Query
+        </button>
+
+        <!-- SQL Output -->
+        <div class="mt-10">
+            <h3 class="text-lg font-semibold text-gray-700 mb-3">
+                Generated SQL
+            </h3>
+            <pre id="sql"
+            class="bg-gray-100 p-5 rounded-xl text-sm overflow-x-auto"></pre>
+        </div>
+
+        <!-- Result Output -->
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold text-gray-700 mb-3">
+                Result
+            </h3>
+            <pre id="result"
+            class="bg-gray-100 p-5 rounded-xl text-sm overflow-x-auto"></pre>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+async function ask(){
+
+let res=await fetch(
+"http://localhost:8000/query",
+{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+question:question.value
+})
+})
+
+let data=await res.json()
+
+sql.innerText=data.sql
+result.innerText=JSON.stringify(data.result,null,2)
+
+}
+
+</script>
+
+</body>
+</html>

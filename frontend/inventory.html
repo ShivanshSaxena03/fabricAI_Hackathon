@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.card {
+    transition: all 0.4s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+}
+
+.input-field {
+    transition: all 0.3s ease;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #3A5A6A;
+    box-shadow: 0 0 0 3px rgba(58, 90, 106, 0.2);
+}
+
+.table-row:hover {
+    background-color: #F8FAFC;
+}
+</style>
+</head>
+
+<body class="flex bg-[#F1F5F9]">
+
+<!-- Sidebar -->
+<div class="w-64 bg-[#2F3E46] text-white h-screen p-8 shadow-xl">
+
+    <h2 class="text-3xl font-['Playfair_Display'] mb-12 tracking-wide">
+        FabricMind
+    </h2>
+
+    <nav class="space-y-6 text-sm tracking-wide">
+        <a href="dashboard.html" class="block hover:translate-x-2 transition">Dashboard</a>
+        <a href="outfit.html" class="block hover:translate-x-2 transition">Outfit Generator</a>
+        <a href="inventory.html" class="block font-semibold text-gray-300">Inventory</a>
+        <a href="sql.html" class="block hover:translate-x-2 transition">SQL Intelligence</a>
+        <a href="chat.html" class="block hover:translate-x-2 transition">AI Copilot</a>
+    </nav>
+
+</div>
+
+<!-- Main Content -->
+<div class="flex-1 p-16">
+
+    <h1 class="text-5xl font-['Playfair_Display'] text-[#1E293B] mb-12">
+        Inventory
+    </h1>
+
+    <!-- Form Card -->
+    <div class="card bg-white rounded-3xl p-10 shadow-md max-w-2xl mb-12">
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <input id="name" placeholder="Name"
+            class="input-field border border-gray-300 p-3 rounded-xl">
+
+            <input id="quantity" placeholder="Quantity"
+            class="input-field border border-gray-300 p-3 rounded-xl">
+
+            <input id="score" placeholder="Score"
+            class="input-field border border-gray-300 p-3 rounded-xl">
+
+        </div>
+
+        <button onclick="add()"
+        class="mt-6 bg-[#3A5A6A] text-white px-8 py-3 rounded-full hover:bg-[#1E293B] transition">
+            Add Item
+        </button>
+
+    </div>
+
+    <!-- Table Card -->
+    <div class="card bg-white rounded-3xl p-10 shadow-md">
+
+        <table class="w-full text-left border-collapse">
+
+            <thead>
+                <tr class="text-[#1E293B] border-b">
+                    <th class="py-3">Name</th>
+                    <th class="py-3">Quantity</th>
+                    <th class="py-3">Score</th>
+                </tr>
+            </thead>
+
+            <tbody id="table" class="text-gray-600"></tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+async function load(){
+
+let res = await fetch("http://localhost:8000/inventory")
+let data = await res.json()
+
+table.innerHTML=""
+
+data.forEach(f=>{
+
+table.innerHTML+=`
+<tr class="table-row border-b transition">
+<td class="py-3">${f.name}</td>
+<td class="py-3">${f.quantity}</td>
+<td class="py-3">${f.sustainability_score}</td>
+</tr>
+`
+
+})
+
+}
+
+</script>
+<script>
+async function add(){
+
+const payload = {
+    name: document.getElementById("name").value,
+    quantity: parseInt(document.getElementById("quantity").value),
+    sustainability_score: parseInt(document.getElementById("score").value)
+}
+
+console.log("Sending:", payload)
+
+await fetch("http://127.0.0.1:8000/inventory", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+})
+
+load()
+}
+</script>
+
+</body>
+</html>

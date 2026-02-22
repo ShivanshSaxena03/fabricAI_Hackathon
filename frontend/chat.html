@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+/* FabricMind theme colors */
+:root{
+    --sidebar:#2f3e46;
+    --mainbg:#eef2f6;
+    --card:#ffffff;
+    --button:#3a5a67;
+    --buttonHover:#2b4652;
+}
+</style>
+
+</head>
+
+<body class="flex h-screen bg-[var(--mainbg)] font-sans">
+
+<!-- Sidebar -->
+<div class="w-64 bg-[var(--sidebar)] text-white flex flex-col p-6">
+
+    <h1 class="text-3xl font-bold mb-10">FabricMind</h1>
+
+    <nav class="space-y-4">
+
+        <a href="dashboard.html" class="block hover:text-gray-300">
+            Outfit Generator
+        </a>
+
+        <a href="inventory.html" class="block hover:text-gray-300">
+            Inventory
+        </a>
+
+        <a href="sql.html" class="block hover:text-gray-300">
+            SQL Intelligence
+        </a>
+
+        <a href="chat.html" class="block text-white font-semibold">
+            AI Copilot
+        </a>
+
+    </nav>
+
+</div>
+
+
+<!-- Main Content -->
+<div class="flex-1 p-10">
+
+    <!-- Title -->
+    <h1 class="text-4xl font-semibold text-gray-800 mb-6">
+        AI Copilot
+    </h1>
+
+    <!-- Chat Card -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 h-[600px] flex flex-col">
+
+        <!-- Chatbox -->
+        <div id="chatbox"
+        class="flex-1 overflow-y-auto space-y-3 mb-4 p-2">
+
+        </div>
+
+
+        <!-- Input Area -->
+        <div class="flex gap-3">
+
+            <input id="message"
+            placeholder="Ask FabricMind AI..."
+            class="flex-1 border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-gray-400">
+
+            <button onclick="send()"
+            class="bg-[var(--button)] hover:bg-[var(--buttonHover)] text-white px-6 py-3 rounded-xl">
+                Send
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+const chatbox=document.getElementById("chatbox")
+const message=document.getElementById("message")
+
+async function send(){
+
+    if(message.value.trim()==="") return
+
+    // User bubble
+    chatbox.innerHTML+=`
+    <div class="flex justify-end">
+        <div class="bg-[var(--button)] text-white px-4 py-2 rounded-xl max-w-md">
+            ${message.value}
+        </div>
+    </div>
+    `
+
+    let userMessage=message.value
+    message.value=""
+
+    chatbox.scrollTop=chatbox.scrollHeight
+
+
+    let res=await fetch(
+    "http://localhost:8000/chat",
+    {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            message:userMessage
+        })
+    })
+
+    let data=await res.json()
+
+
+    // AI bubble
+    chatbox.innerHTML+=`
+    <div class="flex justify-start">
+        <div class="bg-gray-200 text-gray-800 px-4 py-2 rounded-xl max-w-md">
+            ${data.result}
+        </div>
+    </div>
+    `
+
+    chatbox.scrollTop=chatbox.scrollHeight
+
+}
+
+</script>
+
+
+</body>
+</html>

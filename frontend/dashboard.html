@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar-link {
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-link:hover {
+            transform: translateX(6px);
+            color: #ffffff;
+        }
+
+        .card {
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+
+<body class="flex bg-[#F1F5F9]">
+
+<!-- Sidebar -->
+<div class="w-64 bg-[#2F3E46] text-white h-screen p-8 flex flex-col justify-between shadow-xl">
+
+    <div>
+        <h2 class="text-3xl font-['Playfair_Display'] mb-12 tracking-wide">
+            FabricMind
+        </h2>
+
+        <nav class="space-y-6 text-sm tracking-wide">
+            <a href="outfit.html" class="sidebar-link block">Outfit Generator</a>
+            <a href="inventory.html" class="sidebar-link block">Inventory</a>
+            <a href="sql.html" class="sidebar-link block">SQL Intelligence</a>
+            <a href="chat.html" class="sidebar-link block">AI Copilot</a>
+        </nav>
+    </div>
+
+</div>
+
+<!-- Main Content -->
+<div class="flex-1 p-16">
+
+    <h1 class="text-5xl font-['Playfair_Display'] text-[#1E293B] mb-14">
+        Dashboard
+    </h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+        <!-- Card 1 -->
+        <div class="card bg-white rounded-3xl p-10 shadow-md">
+            <h3 class="text-2xl font-semibold text-[#1E293B] mb-4">
+                Smart Outfit Insights
+            </h3>
+            <p class="text-gray-600 mb-6">
+                Generate stylish combinations using AI-based recommendations.
+            </p>
+            <a href="outfit.html"><button class="px-8 py-3 bg-[#3A5A6A] text-white rounded-full hover:bg-[#1E293B] transition">
+                Explore
+            </button></a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card bg-white rounded-3xl p-10 shadow-md">
+            <h3 class="text-2xl font-semibold text-[#1E293B] mb-4">
+                Inventory Overview
+            </h3>
+            <p class="text-gray-600 mb-6">
+                Monitor stock levels and track fabric availability easily.
+            </p>
+            <a href = "inventory.html"><button class ="px-8 py-3 bg-[#3A5A6A] text-white rounded-full hover:bg-[#1E293B] transition">
+                View Inventory
+            </button></a>
+        </div>
+
+        <!-- Card 3 (Added AI SQL Intelligence) -->
+        <div class="card bg-white rounded-3xl p-10 shadow-md">
+            <h3 class="text-2xl font-semibold text-[#1E293B] mb-4">
+                AI SQL Intelligence
+            </h3>
+            <p class="text-gray-600 mb-6">
+                Analyze your database with AI-powered query generation,
+                optimization, and smart insights.
+            </p>
+            <a href="sql.html"><button class = "px-8 py-3 bg-[#3A5A6A] text-white rounded-full hover:bg-[#1E293B] transition">
+                Open SQL AI
+            </button></a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
