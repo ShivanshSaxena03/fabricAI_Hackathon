@@ -1,9 +1,13 @@
+
 <!DOCTYPE html>
 <html>
-<head>
+<head><title>FabricMind AI - Outfit Generator</title>   
 <meta charset="UTF-8">
 
 <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- ✅ Added Markdown Library -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
@@ -43,6 +47,32 @@ animation:spin 1s linear infinite;
 @keyframes spin{
 0%{transform:rotate(0deg);}
 100%{transform:rotate(360deg);}
+}
+
+/* ✅ Added Markdown Styling */
+#result h1, #result h2, #result h3 {
+    font-family: 'Playfair Display', serif;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#result h3 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#result p {
+    margin-bottom: 10px;
+}
+
+#result ul {
+    margin-left: 20px;
+    list-style-type: disc;
+    margin-bottom: 10px;
+}
+
+#result strong {
+    font-weight: 600;
 }
 </style>
 
@@ -91,59 +121,35 @@ Outfit Generator
 <!-- INPUTS -->
 <div class="space-y-6">
 
-<input
-id="fabric"
-placeholder="Fabric (example: cotton)"
-class="input-field w-full border border-gray-300 p-3 rounded-xl">
+<input id="fabric" placeholder="Fabric (example: cotton)" class="input-field w-full border border-gray-300 p-3 rounded-xl">
+<input id="color" placeholder="Color (example: navy)" class="input-field w-full border border-gray-300 p-3 rounded-xl">
+<input id="occasion" placeholder="Occasion (example: wedding)" class="input-field w-full border border-gray-300 p-3 rounded-xl">
 
-<input
-id="color"
-placeholder="Color (example: navy)"
-class="input-field w-full border border-gray-300 p-3 rounded-xl">
-
-<input
-id="occasion"
-placeholder="Occasion (example: wedding)"
-class="input-field w-full border border-gray-300 p-3 rounded-xl">
-<select id="gender"
-class="input-field w-full border border-gray-300 p-3 rounded-xl">
-
+<select id="gender" class="input-field w-full border border-gray-300 p-3 rounded-xl">
 <option value="">Select Gender</option>
 <option>Male</option>
 <option>Female</option>
 <option>Unisex</option>
-
 </select>
 
-
-<select id="body_type"
-class="input-field w-full border border-gray-300 p-3 rounded-xl">
-
+<select id="body_type" class="input-field w-full border border-gray-300 p-3 rounded-xl">
 <option value="">Body Type</option>
 <option>Slim</option>
 <option>Athletic</option>
 <option>Average</option>
 <option>Heavy</option>
-
 </select>
 
-
-<select id="season"
-class="input-field w-full border border-gray-300 p-3 rounded-xl">
-
+<select id="season" class="input-field w-full border border-gray-300 p-3 rounded-xl">
 <option value="">Season</option>
 <option>Summer</option>
 <option>Winter</option>
 <option>Spring</option>
 <option>Autumn</option>
 <option>All Season</option>
-
 </select>
 
-
-<select id="style"
-class="input-field w-full border border-gray-300 p-3 rounded-xl">
-
+<select id="style" class="input-field w-full border border-gray-300 p-3 rounded-xl">
 <option value="">Style Preference</option>
 <option>Minimalist</option>
 <option>Formal</option>
@@ -151,41 +157,21 @@ class="input-field w-full border border-gray-300 p-3 rounded-xl">
 <option>Luxury</option>
 <option>Streetwear</option>
 <option>Traditional</option>
-
 </select>
 
-
-<select id="fit"
-class="input-field w-full border border-gray-300 p-3 rounded-xl">
-
+<select id="fit" class="input-field w-full border border-gray-300 p-3 rounded-xl">
 <option value="">Fit Preference</option>
 <option>Slim Fit</option>
 <option>Regular Fit</option>
 <option>Loose Fit</option>
 <option>Oversized</option>
-
 </select>
 
+<input id="climate" placeholder="Climate (example: hot, cold, humid)" class="input-field w-full border border-gray-300 p-3 rounded-xl">
+<input id="culture" placeholder="Cultural Preference (example: Indian, Western, Indo-Western)" class="input-field w-full border border-gray-300 p-3 rounded-xl">
 
-<input
-id="climate"
-placeholder="Climate (example: hot, cold, humid)"
-class="input-field w-full border border-gray-300 p-3 rounded-xl">
-
-
-<input
-id="culture"
-placeholder="Cultural Preference (example: Indian, Western, Indo-Western)"
-class="input-field w-full border border-gray-300 p-3 rounded-xl">
-
-
-
-<button
-onclick="generateOutfit()"
-class="w-full bg-[#3A5A6A] text-white py-3 rounded-full hover:bg-[#1E293B] transition">
-
+<button onclick="generateOutfit()" class="w-full bg-[#3A5A6A] text-white py-3 rounded-full hover:bg-[#1E293B] transition">
 Generate Outfit
-
 </button>
 
 </div>
@@ -195,24 +181,18 @@ Generate Outfit
 <div class="loader"></div>
 </div>
 
-<!-- RESULT TEXT -->
-<div
-id="result"
-class="mt-8 whitespace-pre-wrap text-[#1E293B] font-medium">
-</div>
+<!-- RESULT -->
+<div id="result" class="mt-8 text-[#1E293B] leading-relaxed space-y-4"></div>
 
 <!-- IMAGE -->
-<img
-id="image"
-class="mt-6 rounded-xl shadow-md hidden">
+<img id="image" class="mt-6 rounded-xl shadow-md hidden">
 
 </div>
-
 </div>
 
 <script>
 async function generateOutfit(){
-    // Get ALL form values
+
     const fabric = document.getElementById("fabric").value
     const color = document.getElementById("color").value
     const occasion = document.getElementById("occasion").value
@@ -228,27 +208,18 @@ async function generateOutfit(){
     const image = document.getElementById("image")
     const loader = document.getElementById("loader")
 
-    resultDiv.innerText = ""
+    resultDiv.innerHTML = ""
     image.style.display = "none"
     loader.style.display = "flex"
 
     try {
         const response = await fetch("http://127.0.0.1:8000/generate-outfit", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                fabric: fabric,
-                color: color,
-                occasion: occasion,
-                gender: gender,
-                body_type: body_type,
-                season: season,
-                style: style,
-                fit: fit,
-                climate: climate,
-                culture: culture
+                fabric, color, occasion, gender,
+                body_type, season, style, fit,
+                climate, culture
             })
         })
 
@@ -258,17 +229,17 @@ async function generateOutfit(){
         }
 
         const data = await response.json()
-        console.log("Backend response:", data)
 
-        resultDiv.innerText = data.outfit_recommendations
+        /* ✅ Markdown Rendering Added */
+        resultDiv.innerHTML = marked.parse(data.outfit_recommendations)
 
         if (data.image_url) {
             image.src = data.image_url
             image.style.display = "block"
         }
+
     } catch (error) {
-        console.error("Error:", error)
-        resultDiv.innerText = "Error generating outfit: " + error.message
+        resultDiv.innerHTML = "<p class='text-red-500'>Error generating outfit: " + error.message + "</p>"
     } finally {
         loader.style.display = "none"
     }

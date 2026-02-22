@@ -85,8 +85,27 @@ professional photography,
 cinematic lighting,
 premium designer outfit
 """
+    prompt1 = f"""
+Create a professional fashion designer sketch.
 
-    image_url = generate_image(image_prompt)
+Design Details:
+- Color: {color}
+- Occasion: {occasion}
+- Fabric: {fabric}
+
+Instructions:
+- Full-body front-facing fashion illustration.
+- Clean black ink outline drawing.
+- Minimalistic technical sketch style (fashion croquis).
+- White background only (no scenery, no props).
+- Emphasize garment silhouette, seams, cuts, and layering.
+- Clearly illustrate fabric behavior based on {fabric} 
+  (drape, stiffness, flow, texture, thickness).
+- Add light hatching or subtle line shading to indicate fabric texture.
+- Keep it elegant, structured, and runway-inspired.
+- No text, no watermark, no color fill (outline sketch only).
+"""
+    image_url = generate_image(prompt1)
 
     return {
 
